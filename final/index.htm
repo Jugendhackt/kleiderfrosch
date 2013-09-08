@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Kleiderschrank</title>
+		<link href='http://fonts.googleapis.com/css?family=Rancho' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="css/screen.css" media="screen, projection" />
+		<script type="text/javascript">
+		function geo() {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+			} else {
+				alert('It seems like Geolocation, which is required for this page, is not enabled in your browser. Please use a browser which supports it.');
+			}
+		}
+		
+		function successFunction(position) {
+			var lat = Number(position.coords.latitude);
+			var lon = Number(position.coords.longitude);
+			//alert('Your latitude is :'+lat+' and longitude is '+lon);
+			var latobj = document.getElementById("lat");
+			var lonobj = document.getElementById("lon");
+			var cityobj = document.getElementById("city");
+			cityobj.value = '';
+			cityobj.disabled = true;
+			latobj.value = lat;
+			lonobj.value = lon;
+		}
+		
+		function errorFunction() {
+			alert('Error');
+		}
+		</script>
+	</head>
+	<body>
+		<div id="content">
+			<h1>Was soll ich heute anziehen?</h1>
+			<p></p>
+			<form action="displayRecommendations.php" method="get">
+				<fieldset>
+					<label for="city">Ort:</label>
+					<input type="text" name="city" id="city" />
+					<input type="button" name="determine_coordinates" value="Ort ermitteln" onclick="geo()" />
+					<br />
+					<!-- Längengrad -->
+					<label for="lat">Längengrad:</label>
+					<input type="text" name="lat" id="lat"></input>
+					<br />
+					<!-- Breitengrad -->
+					<label for="lon">Breitengrad:</label>
+					<input type="text" name="lon" id="lon"></input>
+					<br />
+					<label for="gender">Geschlecht:</label>
+					<input type="radio" name="gender" value="f">weiblich</input>
+					<input type="radio" name="gender" value="m">männlich</input>
+					<br />
+					<input style="width: 460px;" type="submit" value="Kleidungsempfehlungen ermitteln" />
+				</fieldset>
+			</form>
+			<?php
+
+			?>
+		</div>
+	</body>
+</html>

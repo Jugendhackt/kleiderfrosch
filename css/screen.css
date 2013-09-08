@@ -1,0 +1,78 @@
+body {
+	font-family: Helvetica, Arial, Verdana, sans-serif;
+	background-color: #FFD681;
+	overflow: hidden;
+}
+
+#content {
+	width: 960px;
+	margin: 50px auto;
+}
+
+h1 {
+	font-family: 'Rancho', cursive;
+	font-size: 80px;
+	text-align: center;
+	color: #B33C36;
+}
+
+label {
+	float: left;
+	width: 33%;
+	margin-right: 0.5em;
+	padding-top: 0.2em;
+	text-align: right;
+	font-weight: bold;
+}
+
+fieldset {
+	border: none;
+	padding: 10px;
+	font-size: 80%;
+}
+
+form {
+	background-color: #93CC5E;
+	width: 480px;
+	margin-left: auto;
+	margin-right: auto;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+}
+
+img.clothes, #weather_icon {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	ms-interpolation-mode: nearest-neighbor;
+	image-rendering: -moz-crisp-edges;
+	image-rendering: -webkit-optimize-contrast;
+}
+
+#trousers {
+	margin-top: -20px;
+}
+
+a, a:link, a:visited, a:hover, a:active, a:focus {
+	text-decoration: none;
+	font-weight: bold;
+	color: #4EB360;
+}
+
+#box_clothes {
+	float: left;
+	margin-left: 50px;
+}
+
+#box_extras {
+	float: left;
+	margin-left: 200px;
+}
+
+#box_navigation {
+	width: 100%;
+	float: left;
+	margin-left: 220px;
+	margin-top: 50px;
+}

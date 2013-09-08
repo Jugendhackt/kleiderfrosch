@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+
+        <title>Test</title>
+        <script type="text/javascript">
+            function geo(){
+                
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
+                } else {
+                    alert('It seems like Geolocation, which is required for this page, is not enabled in your browser. Please use a browser which supports it.');
+                }
+            }
+
+            function successFunction(position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+                alert('Your latitude is :'+lat+' and longitude is '+lon);
+            }
+            
+            function errorFunction()
+            {
+                alert('Error');
+                
+            }
+        </script>
+    </head>
+    <body>
+
+        <form name="Test" action="#">
+            <input type="submit" value="Geo" onclick="geo()"/>
+        </form>
+
+    </body>
+</html>
