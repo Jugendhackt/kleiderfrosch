@@ -6,6 +6,9 @@
 		<link href='http://fonts.googleapis.com/css?family=Rancho' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" type="text/css" href="css/screen.css" media="screen, projection" />
 		<script type="text/javascript">
+        function $ (id) {
+            return document.getElementById (id);
+        }
 		function geo() {
 			if (navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
@@ -18,9 +21,9 @@
 			var lat = Number(position.coords.latitude);
 			var lon = Number(position.coords.longitude);
 			//alert('Your latitude is :'+lat+' and longitude is '+lon);
-			var latobj = document.getElementById("lat");
-			var lonobj = document.getElementById("lon");
-			var cityobj = document.getElementById("city");
+			var latobj = $("lat");
+			var lonobj = $("lon");
+			var cityobj = $("city");
 			cityobj.value = '';
 			cityobj.disabled = true;
 			latobj.value = lat;
@@ -40,6 +43,7 @@
 				<fieldset>
 					<label for="city">Ort:</label>
 					<input type="text" name="city" id="city" />
+                    <div id="autocomp"></div>
 					<input type="button" name="determine_coordinates" value="Ort ermitteln" onclick="geo()" />
 					<br />
 					<!-- Längengrad -->
@@ -61,5 +65,92 @@
 
 			?>
 		</div>
+        <script type="text/javascript">
+            var cityfield = $ ("city");
+            cityfield.addEventListener ("input", function () {
+
+                var compcont = $ ("autocomp");
+                if (this.value.length < 3) {
+                    var n = compcont.firstChild;
+                    while (n) {
+                        r = n;
+                        n = n.nextSibling;
+                        compcont.removeChild (r);
+                    }
+                    return;
+                }
+
+                var req = new XMLHttpRequest ();
+                req.onreadystatechange = function () {
+                    if (this.readyState < 4 || this.status != 200) {
+                        return 
+                    }
+
+                    // get the list of proposed city names
+                    var cities = this.responseText.split ("\n");
+                    if (cities [0] == "") return;
+
+                    // last element in cities always seems 
+                    // to be as list so we ignore that
+                    for (var i = 0; i < cities.length - 1; i++) {
+                        
+                        if (compcont.childNodes.length <= i) {
+                            var city = document.createElement ("P");
+
+                            city.classList.add ("suggestion");
+                            city.appendChild (document.createTextNode (cities [i]));
+                            compcont.appendChild (city);
+
+                            city.addEventListener ("click", function () {
+                                cityfield.value = this.innerText;
+                                for (n = compcont.firstChild; n; n = n.nextSibling) {
+                                    n.classList.remove ("highlight");
+                                }
+                                cityfield.classList.add ("highlight");
+                            });
+                        } else {
+                            compcont.childNodes [i].firstChild.nodeValue = cities [i];
+                        }
+                    }
+
+                    var n = compcont.childNodes [cities.length - 1];
+                    console.log (n);
+                    while (n) {
+                        r = n;
+                        n = n.nextSibling;
+                        compcont.removeChild (r);
+                    }
+
+                };
+
+                // request a maximum of 10 city names, it's kinda uncool
+                // to hardcode it like that, but I guess it won't change very often
+                req.open ("GET", "Cities.php?max=10&prefix=" + encodeURIComponent (this.value));
+                req.send ();
+            });
+
+            cityfield.addEventListener ("keydown", function (event) {
+                if (event.which != 38 && event.which != 40) {
+                    return;
+                }
+
+                var autocomp = $ ("autocomp");
+                for (var p = autocomp.firstChild; p; p = p.nextSibling) {
+                    if (p.classList.contains ("highlight")) {
+                        p.classList.remove ("highlight");
+                        break;
+                    }
+                }
+
+                if (event.which == 38) {
+                    var n = p && p.previousSibling || autocomp.lastChild;
+                } else {
+                    var n = p && p.nextSibling || autocomp.firstChild;
+                }
+
+                n.classList.add ("highlight");
+                this.value = n.innerHTML;
+            });
+        </script>
 	</body>
 </html>
